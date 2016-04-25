@@ -4,13 +4,11 @@ BINSRC=$(BINSRC_DIR)/cmd.js
 BINOUTPUT=./bin/cmd.js
 
 
-all: **/*.js *.js
-.phony: bin
-main: bin
+all: **/*.js *.js bin
 
 %.js: %.coffee
 	npm run coffee -- ./$<
 
-bin:
+$(BINOUTPUT): $(SHELLSTUB) $(BINSRC)
 	cat $(SHELLSTUB) $(BINSRC) > $(BINOUTPUT)
 
