@@ -24,24 +24,27 @@ readJSON = (filePath, cb) ->
 		_json = JSON.parse(res)
 		cb null, _json
 
+
 # get the relative path for "main" path from the bower components directory
 joinPath = (bowerPath, main) ->
-   path.join( path.dirname(bowerPath), main )
+	_main = main
+	# handle case where _main has a relative
+	# path like "./lib/someScript.js",
+	# which will incorrectly resolve to root package dir.
+	relativeRegex = /^\.\/(.+)$/im
+	_match = relativeRegex.exec _main
+	if _match?
+		_main = _match[1]
+	path.join( path.dirname(bowerPath), main )
+
 
 # given the parsed JSON data, extract the "main" property
 # and prepend the appropriate path.
 extractMain = (filePath, data, cb) ->
 	_main = data.main
 
-	# handle case where _main has a relative
-	# path like "./lib/someScript.js",
-	# which will incorrectly resolve to root package dir.
 	unless _main?
 		return null
-	relativeRegex = /^\.\/(.+)$/im
-	_match = relativeRegex.exec _main
-	if _match?
-		_main = _match[1]
 
 	# console.log "main", _main
 	# console.log "filePath", filePath

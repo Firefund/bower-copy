@@ -36,22 +36,22 @@
   };
 
   joinPath = function(bowerPath, main) {
-    return path.join(path.dirname(bowerPath), main);
-  };
-
-  extractMain = function(filePath, data, cb) {
-    var _main, _match, _pd, mainPath, p, relativeRegex;
-    _main = data.main;
-    if (_main == null) {
-      return null;
-    }
+    var _main, _match, relativeRegex;
+    _main = main;
     relativeRegex = /^\.\/(.+)$/im;
     _match = relativeRegex.exec(_main);
     if (_match != null) {
       _main = _match[1];
     }
-    _pd = path.dirname(filePath);
-    console.log("pd", _pd);
+    return path.join(path.dirname(bowerPath), main);
+  };
+
+  extractMain = function(filePath, data, cb) {
+    var _main, mainPath, p;
+    _main = data.main;
+    if (_main == null) {
+      return null;
+    }
     mainPath = (function() {
       var i, len, results;
       if (Array.isArray(_main)) {
