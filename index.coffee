@@ -43,14 +43,14 @@ extractMain = (filePath, data, cb) ->
 	if _match?
 		_main = _match[1]
 
-	console.log "main", _main
-	console.log "filePath", filePath
-	_pd = path.dirname(filePath)
-	console.log "pd", _pd
-	mainPath = if Array.isArray _main	then joinPath filePath,p for p in _main	else [joinPath _main]
+	# console.log "main", _main
+	# console.log "filePath", filePath
+	# _pd = path.dirname(filePath)
+	# console.log "pd", _pd
+	mainPath = if Array.isArray _main	then joinPath filePath,p for p in _main	else [joinPath filePath,_main]
 		
 	# mainPath = path.join( path.dirname(filePath), _main )
-	console.log "mainPath", mainPath
+	# console.log "mainPath", mainPath
 	mainPath
 
 # given component's folder name, get the full path to
@@ -60,13 +60,14 @@ mainFromFolder = (folderName, cb) ->
 	readJSON _filePath, (err, pkg) ->
 		# console.log "mainFromFolder::filepath", _filePath TODO: delete
 		mainPath = extractMain(_filePath, pkg)
+		
 		if mainPath.length > 0
-		  cb null, {component: folderName, main: p} for p in mainPath
+			cb null, {component: folderName, main: mainPath}
 		else
 			_filePath = inBowerDir(folderName, "package.json")
 			readJSON _filePath, (err, pkg) ->
 				mainPath = extractMain(_filePath, pkg)
-				cb null, {component: folderName, main: p} for p in mainPath
+				cb null, {component: folderName, main: mainPath}
 
 
 copyScript = (scriptRef, outputDir, cb) ->

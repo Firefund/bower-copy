@@ -50,8 +50,6 @@
     if (_match != null) {
       _main = _match[1];
     }
-    console.log("main", _main);
-    console.log("filePath", filePath);
     _pd = path.dirname(filePath);
     console.log("pd", _pd);
     mainPath = (function() {
@@ -64,10 +62,9 @@
         }
         return results;
       } else {
-        return [joinPath(_main)];
+        return [joinPath(filePath, _main)];
       }
     })();
-    console.log("mainPath", mainPath);
     return mainPath;
   };
 
@@ -75,32 +72,21 @@
     var _filePath;
     _filePath = inBowerDir(folderName, ".bower.json");
     return readJSON(_filePath, function(err, pkg) {
-      var i, len, mainPath, p, results;
+      var mainPath;
       mainPath = extractMain(_filePath, pkg);
       if (mainPath.length > 0) {
-        results = [];
-        for (i = 0, len = mainPath.length; i < len; i++) {
-          p = mainPath[i];
-          results.push(cb(null, {
-            component: folderName,
-            main: p
-          }));
-        }
-        return results;
+        return cb(null, {
+          component: folderName,
+          main: mainPath
+        });
       } else {
         _filePath = inBowerDir(folderName, "package.json");
         return readJSON(_filePath, function(err, pkg) {
-          var j, len1, results1;
           mainPath = extractMain(_filePath, pkg);
-          results1 = [];
-          for (j = 0, len1 = mainPath.length; j < len1; j++) {
-            p = mainPath[j];
-            results1.push(cb(null, {
-              component: folderName,
-              main: p
-            }));
-          }
-          return results1;
+          return cb(null, {
+            component: folderName,
+            main: mainPath
+          });
         });
       }
     });
