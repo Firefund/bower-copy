@@ -71,15 +71,32 @@ mainFromFolder = (folderName, cb) ->
 				cb null, {component: folderName, main: mainPath}
 
 
-copyScript = (scriptRef, outputDir, cb) ->
-	scriptPath = scriptRef.main
-	outputPath = path.join(outputDir, scriptRef.component) + ".js"
-	fs.copy scriptPath, outputPath, (err) ->
-		cb null, {src: scriptPath, dest: outputPath}
+copyMain = (scriptRef, outputDir, cb) ->
+	scriptPaths = scriptRef.main
+	filesToCopy = scriptPaths.length
 
-copyScriptTo = (outputDir) ->
+	copyScript = (scriptRef, outputDir, cb) ->
+		scriptPath = scriptRef.main
+  
+	cbHandler = (scriptPath, outputPath) -> (err) ->
+  	if filesToCopy == 1 then cb null, {src: scriptPath, dest: outputPath}
+  	filesToCopy--
+  
+	scriptPaths.forEach (p) ->
+		outputPath = path.join(outputDir, path.basename(p))
+		fs.copy p, outputPath, cbHandler p, outputPath
+	
+	# scriptPaths = scriptRef.main
+	# outputPath = scriptPath.map( (p) -> path.join(outputDir, path.basename(p)))	
+	# #outputPath = path.join outputDir, path.basename p for p in scriptPath
+	# filesToCopy = scriptPath.length
+	# (scriptPath for scriptPath in scriptPaths)
+	# fs.copy scriptPath, outputPath, (err) ->
+	# 	cb null, {src: scriptPath, dest: outputPath}
+
+copyMainTo = (outputDir) ->
 	(scriptRef, cb) ->
-		copyScript scriptRef, outputDir, cb
+		copyMain scriptRef, outputDir, cb
 
 # copy components' main scripts to a target dir
 copyComponents = (options, cb) -> 
@@ -91,7 +108,7 @@ copyComponents = (options, cb) ->
 	_copyFn = ->
 		fs.readdir _opts.src, (err, folders) ->
 			async.map folders, mainFromFolder, (err, completed) ->
-				async.map completed, copyScriptTo(_opts.dest), (err, copied) ->
+				async.map completed, copyMainTo(_opts.dest), (err, copied) ->
 					cb null, copied
 	fs.exists _opts.dest, (exists) ->
 		if exists
