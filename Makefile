@@ -3,8 +3,7 @@ SHELLSTUB=$(BINSRC_DIR)/shell_stub.txt
 BINSRC=$(BINSRC_DIR)/cmd.js
 BINOUTPUT=./bin/cmd.js
 
-
-all: **/*.js *.js bin
+all: **/*.js *.js $(BINOUTPUT)
 
 %.js: %.coffee
 	npm run coffee -- ./$<

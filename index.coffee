@@ -48,7 +48,7 @@ extractMain = (filePath, data, cb) ->
 
 	# console.log "main", _main
 	# console.log "filePath", filePath
-	mainPath = if Array.isArray _main	then joinPath filePath,p for p in _main	else [joinPath filePath,_main]
+	mainPath = if Array.isArray _main then joinPath filePath,p for p in _main else [joinPath filePath,_main]
 		
 	# mainPath = path.join( path.dirname(filePath), _main )
 	# console.log "mainPath", mainPath
