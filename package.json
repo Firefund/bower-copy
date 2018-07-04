@@ -13,19 +13,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/scivey/bower-copy.git"
+    "url": "https://github.com/Firefund/bower-copy.git"
   },
-  "author": "Scott Ivey",
+  "authors": ["Scott Ivey", "dotnetCarpenter"],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/scivey/bower-copy/issues"
+    "url": "https://github.com/Firefund/bower-copy/issues"
   },
   "preferGlobal": true,
   "dependencies": {
-    "underscore": "~1.5.2",
+    "argparse": "~0.1.15",
     "async": "~0.2.9",
+    "file-compare": "0.0.2",
     "fs-extra": "~0.8.1",
-    "argparse": "~0.1.15"
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
     "coffee-script": "^1.10.0"

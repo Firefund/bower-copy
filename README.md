@@ -1,6 +1,7 @@
 bower-copy
 =================
-Scott Ivey -> http://www.scivey.net
+
+Forked from https://github.com/scivey/bower-copy/
 
 Copy main script files of bower components to an arbitrary destination directory, or resolve a list of component names paired with paths to their main scripts.  Usable on the command line and as a `require`d module.
 
@@ -34,8 +35,8 @@ Command Line
 ###bower-copy
 Copy bower components' main scripts to a target directory.
 - `-s`, `--src`: path to bower's component directory, defaulting to `./bower_components`.
-- `d`, `--dest`: path to output directory.  The directory is recursively created if it doesn't exist.
-- `r`, `--resolve`: when passed the `-r` flag, `bower-copy` will output the components' names and the paths to their main scripts in JSON format.  The files won't actually be copied.  This is equivalent to calling `resolveComponents` throug the API.
+- `-d`, `--dest`: path to output directory.  The directory is recursively created if it doesn't exist.
+- `-r`, `--resolve`: when passed the `-r` flag, `bower-copy` will output the components' names and the paths to their main scripts in JSON format.  The files won't actually be copied.  This is equivalent to calling `resolveComponents` throug the API.
 
 
 API
@@ -45,6 +46,7 @@ Copies all bower components to `{dest}/{component_name}.js`, and returns a list 
 - `options` is a hash with parameters as its properties:
 	- `options.src` is the root `bower_components` directory.  It defaults to `{PROJECT_DIR}/bower_components`.
 	- `options.dest` is the target directory, which will contain the main script files.
+	- `options.newer` if set to `true`, then only only copy the bower `main` file if it is newer than the corresponding file in in the target directory.
 - `callback` has an `err, results` signature, where `results` is an array of objects with `src` and `dest` properties -- one for each script copied.
 
 ###resolveComponents([componentDir,] callback)
@@ -55,29 +57,28 @@ Returns a list of objects indicating the name (`component`) and main script path
 Changelog
 ------------
 
-###0.1.0
+### 0.3.0 ###
+- Added the `newer` flag to the `options` object, which will only copy the bower `main` file(s) if it
+is newer than the corresponding file in in the target directory.
+
+### 0.2.0 ###
+- Added support for multiple 'main' files in bower.json
+
+### 0.1.0 ###
 - Added command line interface for global install.
 - Destination directory is created if it doesn't exist (recursively, with `fs-extra`'s `#mkdirs` method).
 
-###0.0.2
+### 0.0.2 ###
 - Now uses`.bower.json` by default, and only resorts to loading `package.json` if `.bower.json` does not specify a `main` property.
 - Correctly handles components with relative path values for `main`, e.g. `./lib/index.js`.  These are rewritten in the form of `{COMPONENT_NAME}/lib/index.js`.
 
-###0.0.1
+### 0.0.1 ###
 - Initial release
 
 GitHub
 ------------
-https://github.com/scivey/bower-copy
+https://github.com/Firefund/bower-copy
 
-
-Contact
-------------
-https://github.com/scivey
-
-http://www.scivey.net
-
-scott.ivey@gmail.com
 
 License
 ------------

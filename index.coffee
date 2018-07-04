@@ -3,6 +3,7 @@ fs = require "fs-extra"
 _ = require "underscore"
 path = require "path"
 async = require "async"
+compare = require "file-compare"
 
 flatsplat = (list) ->
 	if list.length is 1 and _.isArray(list[0])
